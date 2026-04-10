@@ -154,12 +154,11 @@ body {
 /* Form specific overrides */
 .task-form {
   display: flex;
-  gap: 1rem;
-  align-items: flex-end;
+  flex-direction: column;
+  gap: 1.25rem;
 }
 .task-form .input-group {
   margin: 0;
-  flex-grow: 1;
 }
 
 /* Lists and Cards */
