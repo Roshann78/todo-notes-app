@@ -4,39 +4,29 @@ const TaskItem = ({ task, onToggle, onDelete }) => {
   });
 
   return (
-    <article 
-      className="task-item" 
-      style={{ 
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between', 
-        border: '1px solid #e2e8f0', padding: '0.75rem', borderRadius: '8px', 
-        marginBottom: '0.5rem', backgroundColor: '#f8fafc',
-        opacity: task.isCompleted ? 0.7 : 1
-      }}
-    >
-      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', overflow: 'hidden' }}>
+    <article className={`task-item ${task.isCompleted ? 'completed' : ''}`}>
+      <div className="task-content">
         <input 
           type="checkbox" 
           checked={task.isCompleted} 
           onChange={onToggle}
-          style={{ width: '1.25rem', height: '1.25rem', cursor: 'pointer' }}
+          className="task-checkbox"
         />
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <h3 style={{ 
-            margin: 0, fontSize: '1.1rem', 
-            textDecoration: task.isCompleted ? 'line-through' : 'none',
-            color: task.isCompleted ? '#64748b' : 'inherit'
-          }}>
-            {task.title}
-          </h3>
-          <span style={{ fontSize: '0.75rem', color: '#94a3b8' }}>{formattedDate}</span>
+        <div className="task-text">
+          <h3 className="task-title">{task.title}</h3>
+          <span className="card-footer" style={{ marginTop: '0.25rem' }}>{formattedDate}</span>
         </div>
       </div>
       <button 
         type="button" 
         onClick={onDelete}
-        style={{ cursor: 'pointer', backgroundColor: 'transparent', color: '#ef4444', border: '1px solid #ef4444', borderRadius: '4px', padding: '0.25rem 0.5rem', marginLeft: '1rem' }}
+        className="btn-delete"
+        title="Delete task"
+        style={{ marginLeft: '1rem' }}
       >
-        Delete
+        <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"></path>
+        </svg>
       </button>
     </article>
   );

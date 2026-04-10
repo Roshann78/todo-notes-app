@@ -6,48 +6,42 @@ const NoteForm = ({ onAddNote }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!title.trim() || !body.trim()) return; // Don't submit empty values
+    if (!title.trim() || !body.trim()) return;
     
-    // Pass values up to the parent component
     onAddNote(title.trim(), body.trim());
-    
-    // Clear inputs after successful submission
     setTitle('');
     setBody('');
   };
 
   return (
-    <form onSubmit={handleSubmit} className="note-form" style={{ display: 'flex', flexDirection: 'column', gap: '1rem', maxWidth: '400px', marginBottom: '2rem' }}>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-        <label htmlFor="title" style={{ fontWeight: 'bold' }}>Title</label>
+    <form onSubmit={handleSubmit} className="form-container">
+      <div className="input-group">
+        <label htmlFor="title" className="input-label">Title</label>
         <input 
           type="text" 
           id="title" 
           name="title" 
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          placeholder="Enter note title..." 
-          style={{ padding: '0.5rem', borderRadius: '4px', border: '1px solid #ccc' }}
+          placeholder="What's this note about?" 
+          className="input-field"
           required
         />
       </div>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-        <label htmlFor="body" style={{ fontWeight: 'bold' }}>Body</label>
+      <div className="input-group">
+        <label htmlFor="body" className="input-label">Details</label>
         <textarea 
           id="body" 
           name="body" 
           value={body}
           onChange={(e) => setBody(e.target.value)}
           rows="4" 
-          placeholder="Enter note content..."
-          style={{ padding: '0.5rem', borderRadius: '4px', border: '1px solid #ccc' }}
+          placeholder="Write your thoughts here..."
+          className="input-field"
           required
         ></textarea>
       </div>
-      <button 
-        type="submit" 
-        style={{ alignSelf: 'flex-start', padding: '0.5rem 1rem', cursor: 'pointer', backgroundColor: '#007bff', color: 'white', border: 'none', borderRadius: '4px' }}
-      >
+      <button type="submit" className="btn-submit">
         Add Note
       </button>
     </form>

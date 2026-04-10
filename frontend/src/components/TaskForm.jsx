@@ -5,16 +5,16 @@ const TaskForm = ({ onAddTask }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!title.trim()) return; // Prevent empty tasks
+    if (!title.trim()) return;
     
     onAddTask(title.trim());
-    setTitle(''); // Clear input
+    setTitle('');
   };
 
   return (
-    <form onSubmit={handleSubmit} className="task-form" style={{ display: 'flex', gap: '0.5rem', maxWidth: '600px', marginBottom: '2rem', alignItems: 'flex-end' }}>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem', flexGrow: 1 }}>
-        <label htmlFor="title" style={{ fontWeight: 'bold' }}>New Task</label>
+    <form onSubmit={handleSubmit} className="form-container" style={{ display: 'flex', gap: '1rem', alignItems: 'flex-end' }}>
+      <div className="input-group" style={{ margin: 0, flexGrow: 1 }}>
+        <label htmlFor="title" className="input-label">New Task</label>
         <input 
           type="text" 
           id="title" 
@@ -22,14 +22,11 @@ const TaskForm = ({ onAddTask }) => {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="What needs to be done?" 
-          style={{ padding: '0.5rem', borderRadius: '4px', border: '1px solid #ccc' }}
+          className="input-field"
           required
         />
       </div>
-      <button 
-        type="submit" 
-        style={{ padding: '0.5rem 1rem', cursor: 'pointer', backgroundColor: '#10b981', color: 'white', border: 'none', borderRadius: '4px', height: 'fit-content' }}
-      >
+      <button type="submit" className="btn-submit" style={{ whiteSpace: 'nowrap' }}>
         Add Task
       </button>
     </form>
