@@ -12,8 +12,8 @@ const TaskForm = ({ onAddTask }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="form-container" style={{ display: 'flex', gap: '1rem', alignItems: 'flex-end' }}>
-      <div className="input-group" style={{ margin: 0, flexGrow: 1 }}>
+    <form onSubmit={handleSubmit} className="form-container task-form">
+      <div className="input-group">
         <label htmlFor="title" className="input-label">New Task</label>
         <input 
           type="text" 
@@ -26,7 +26,7 @@ const TaskForm = ({ onAddTask }) => {
           required
         />
       </div>
-      <button type="submit" className="btn-submit" style={{ whiteSpace: 'nowrap' }}>
+      <button type="submit" className="btn-submit">
         Add Task
       </button>
     </form>
