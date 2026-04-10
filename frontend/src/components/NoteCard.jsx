@@ -1,4 +1,4 @@
-const NoteCard = ({ note }) => {
+const NoteCard = ({ note, onDelete }) => {
   // Format the date using the browser's locale
   const formattedDate = new Date(note.createdAt).toLocaleDateString(undefined, {
     year: 'numeric',
@@ -14,6 +14,7 @@ const NoteCard = ({ note }) => {
         <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1.25rem' }}>{note.title}</h3>
         <button 
           type="button" 
+          onClick={onDelete}
           style={{ cursor: 'pointer', backgroundColor: 'transparent', color: '#ef4444', border: '1px solid #ef4444', borderRadius: '4px', padding: '0.25rem 0.5rem' }}
         >
           Delete
