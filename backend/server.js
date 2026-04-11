@@ -3,13 +3,32 @@ dotenv.config();
 
 const express = require('express');
 const cors = require('cors');
+const session = require('express-session');
+const passport = require('./config/passport');
 const connectDB = require('./config/db');
+const authRoutes = require('./routes/authRoutes');
 
 const app = express();
 
 // Middleware
 app.use(express.json());
-app.use(cors({ origin: process.env.CLIENT_URL }));
+app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
+
+// Session middleware
+app.use(
+  session({
+    secret: process.env.JWT_SECRET,
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
+// Initialize Passport
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Routes
+app.use('/auth', authRoutes);
 
 // Health check route
 app.get('/health', (req, res) => {
