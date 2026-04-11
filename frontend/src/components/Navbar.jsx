@@ -37,7 +37,7 @@ const Navbar = () => {
       <style>{`
         .hamburger-menu { display: none; cursor: pointer; flex-direction: column; gap: 5px; padding: 4px; }
         .bar { display: block; width: 24px; height: 3px; background-color: var(--text-main); border-radius: 3px; transition: var(--transition); }
-        .nav-user { display: flex; align-items: center; margin-left: auto; }
+        .nav-user { display: flex; align-items: center; }
         .user-info { display: flex; align-items: center; gap: 0.75rem; }
         .user-avatar { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent-color); }
         .user-name { color: var(--text-main); font-size: 0.9rem; font-weight: 500; }
