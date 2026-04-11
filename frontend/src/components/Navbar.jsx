@@ -27,10 +27,10 @@ const Navbar = () => {
                 <img src={user.profilePhoto} alt={user.name} className="user-avatar" referrerPolicy="no-referrer" />
               )}
               <span className="user-name">{user.name}</span>
-              <button className="logout-btn" onClick={logout}>Logout</button>
+              <button className="logout-btn" onClick={logout}>Sign Out</button>
             </div>
           ) : (
-            <NavLink to="/login" className="nav-link login-link" onClick={() => setIsOpen(false)}>Login</NavLink>
+            <NavLink to="/login" className="nav-link login-link" onClick={() => setIsOpen(false)}>Sign In</NavLink>
           )}
         </div>
       </nav>

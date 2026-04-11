@@ -1,21 +1,20 @@
-import { BrowserRouter as Router, Routes, Route, useSearchParams, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
+import ProtectedRoute from './components/ProtectedRoute';
 import NotesPage from './pages/NotesPage';
 import TasksPage from './pages/TasksPage';
 import LoginPage from './pages/LoginPage';
+import useAuth from './hooks/useAuth';
 import './App.css';
 
-// Handles the OAuth redirect: backend sends user to /?token=XXX
-// This component redirects to /login?token=XXX so LoginPage can process it
-const TokenHandler = () => {
-  const [searchParams] = useSearchParams();
-  const token = searchParams.get('token');
+// Redirect logged-in users away from /login
+const LoginRoute = () => {
+  const { user, loading } = useAuth();
 
-  if (token) {
-    return <Navigate to={`/login?token=${token}`} replace />;
-  }
+  if (loading) return null;
+  if (user) return <Navigate to="/" replace />;
 
-  return <NotesPage />;
+  return <LoginPage />;
 };
 
 function App() {
@@ -23,9 +22,14 @@ function App() {
     <Router>
       <Navbar />
       <Routes>
-        <Route path="/" element={<TokenHandler />} />
-        <Route path="/tasks" element={<TasksPage />} />
-        <Route path="/login" element={<LoginPage />} />
+        {/* Protected routes — require login */}
+        <Route element={<ProtectedRoute />}>
+          <Route path="/" element={<NotesPage />} />
+          <Route path="/tasks" element={<TasksPage />} />
+        </Route>
+
+        {/* Public route — redirects to / if already logged in */}
+        <Route path="/login" element={<LoginRoute />} />
       </Routes>
     </Router>
   );

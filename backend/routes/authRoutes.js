@@ -24,9 +24,9 @@ router.get(
       expiresIn: '7d',
     });
 
-    // Redirect to frontend with token as query parameter
+    // Redirect to frontend login page with token as query parameter
     const clientURL = process.env.CLIENT_URL || 'http://localhost:5173';
-    res.redirect(`${clientURL}?token=${token}`);
+    res.redirect(`${clientURL}/login?token=${token}`);
   }
 );
 
