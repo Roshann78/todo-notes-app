@@ -1,10 +1,39 @@
 const TaskItem = ({ task, onToggle, onDelete }) => {
-  const formattedDate = new Date(task.createdAt).toLocaleDateString(undefined, {
+  const formattedCreatedDate = new Date(task.createdAt).toLocaleDateString(undefined, {
     month: 'short', day: 'numeric'
   });
 
+  const getTaskStatus = (dueDate, isCompleted) => {
+    if (!dueDate) return 'grey'; // no due date -> grey
+    if (isCompleted) return 'grey'; 
+    
+    const now = new Date();
+    const due = new Date(dueDate);
+    const timeDiff = due.getTime() - now.getTime();
+
+    if (timeDiff < 0) return 'red'; // overdue -> red
+    
+    // due today -> orange
+    if (
+      due.getDate() === now.getDate() &&
+      due.getMonth() === now.getMonth() &&
+      due.getFullYear() === now.getFullYear()
+    ) {
+      return 'orange';
+    }
+
+    // due soon (within 72 hours) -> yellow
+    if (timeDiff > 0 && timeDiff <= 72 * 60 * 60 * 1000) {
+      return '#FFD700'; // yellow/gold
+    }
+
+    return 'green'; // upcoming -> green
+  };
+
+  const borderColor = getTaskStatus(task.dueDate, task.isCompleted);
+
   return (
-    <article className={`task-item ${task.isCompleted ? 'completed' : ''}`}>
+    <article className={`task-item ${task.isCompleted ? 'completed' : ''}`} style={{ borderLeft: `6px solid ${borderColor}` }}>
       <div className="task-content">
         <input 
           type="checkbox" 
@@ -14,7 +43,12 @@ const TaskItem = ({ task, onToggle, onDelete }) => {
         />
         <div className="task-text">
           <h3 className="task-title">{task.title}</h3>
-          <span className="card-footer" style={{ marginTop: '0.25rem' }}>{formattedDate}</span>
+          {task.dueDate && (
+            <div className="task-due-date" style={{ color: borderColor !== 'grey' ? borderColor : 'inherit', fontSize: '0.85rem', fontWeight: '500', marginTop: '0.2rem' }}>
+              Due: {new Date(task.dueDate).toLocaleString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+            </div>
+          )}
+          <span className="card-footer" style={{ marginTop: '0.25rem', display: 'block' }}>Created: {formattedCreatedDate}</span>
         </div>
       </div>
       <button 

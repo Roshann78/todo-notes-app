@@ -23,10 +23,10 @@ const useTasks = () => {
     fetchTasks();
   }, []);
 
-  const addTask = async (title) => {
+  const addTask = async (title, dueDate = null) => {
     try {
       setError(null);
-      await axiosInstance.post('/api/tasks', { title });
+      await axiosInstance.post('/api/tasks', { title, dueDate });
       await fetchTasks();
     } catch (err) {
       setError(err.response?.data?.message || err.message || 'Failed to add task');
