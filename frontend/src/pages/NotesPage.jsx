@@ -1,5 +1,7 @@
 import NoteForm from '../components/NoteForm';
 import NoteList from '../components/NoteList';
+import SkeletonCard from '../components/SkeletonCard';
+import EmptyState from '../components/EmptyState';
 import useNotes from '../hooks/useNotes';
 import { motion } from 'framer-motion';
 
@@ -8,10 +10,14 @@ const NotesPage = () => {
 
   if (loading) {
     return (
-      <div className="page-container">
+      <motion.div className="page-container" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
         <h1 className="page-title">Notes</h1>
-        <div style={{ textAlign: 'center', padding: '2rem', opacity: 0.7 }}>Loading notes...</div>
-      </div>
+        <div className="grid-container">
+          <SkeletonCard lines={3} />
+          <SkeletonCard lines={4} />
+          <SkeletonCard lines={2} />
+        </div>
+      </motion.div>
     );
   }
 
@@ -35,7 +41,15 @@ const NotesPage = () => {
     >
       <h1 className="page-title">Notes</h1>
       <NoteForm onAddNote={addNote} />
-      <NoteList notes={notes} onDeleteNote={deleteNote} />
+      {notes.length === 0 ? (
+        <EmptyState 
+          icon="📝"
+          heading="No notes yet"
+          subtext="Click 'Add Note' to get started"
+        />
+      ) : (
+        <NoteList notes={notes} onDeleteNote={deleteNote} />
+      )}
     </motion.div>
   );
 };

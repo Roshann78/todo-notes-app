@@ -1,5 +1,7 @@
 import TaskForm from '../components/TaskForm';
 import TaskList from '../components/TaskList';
+import SkeletonCard from '../components/SkeletonCard';
+import EmptyState from '../components/EmptyState';
 import useTasks from '../hooks/useTasks';
 import { motion } from 'framer-motion';
 
@@ -8,10 +10,14 @@ const TasksPage = () => {
 
   if (loading) {
     return (
-      <div className="page-container">
+      <motion.div className="page-container" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
         <h1 className="page-title">Tasks</h1>
-        <div style={{ textAlign: 'center', padding: '2rem', opacity: 0.7 }}>Loading tasks...</div>
-      </div>
+        <div className="tasks-container" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <SkeletonCard lines={1} />
+          <SkeletonCard lines={1} />
+          <SkeletonCard lines={1} />
+        </div>
+      </motion.div>
     );
   }
 
@@ -35,11 +41,19 @@ const TasksPage = () => {
     >
       <h1 className="page-title">Tasks</h1>
       <TaskForm onAddTask={addTask} />
-      <TaskList 
-        tasks={tasks} 
-        onToggleTask={toggleTask}
-        onDeleteTask={deleteTask} 
-      />
+      {tasks.length === 0 ? (
+        <EmptyState 
+          icon="✅"
+          heading="No tasks yet"
+          subtext="Add your first task to get started"
+        />
+      ) : (
+        <TaskList 
+          tasks={tasks} 
+          onToggleTask={toggleTask}
+          onDeleteTask={deleteTask} 
+        />
+      )}
     </motion.div>
   );
 };
