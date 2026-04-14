@@ -7,6 +7,7 @@ const session = require('express-session');
 const passport = require('./config/passport');
 const connectDB = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
+const noteRoutes = require('./routes/noteRoutes');
 
 const app = express();
 
@@ -29,6 +30,7 @@ app.use(passport.session());
 
 // Routes
 app.use('/auth', authRoutes);
+app.use('/api/notes', noteRoutes);
 
 // Health check route
 app.get('/health', (req, res) => {
