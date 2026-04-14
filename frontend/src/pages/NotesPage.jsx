@@ -1,6 +1,7 @@
 import NoteForm from '../components/NoteForm';
 import NoteList from '../components/NoteList';
 import useNotes from '../hooks/useNotes';
+import { motion } from 'framer-motion';
 
 const NotesPage = () => {
   const { notes, loading, error, addNote, deleteNote } = useNotes();
@@ -26,11 +27,16 @@ const NotesPage = () => {
   }
 
   return (
-    <div className="page-container">
+    <motion.div 
+      className="page-container"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.25 }}
+    >
       <h1 className="page-title">Notes</h1>
       <NoteForm onAddNote={addNote} />
       <NoteList notes={notes} onDeleteNote={deleteNote} />
-    </div>
+    </motion.div>
   );
 };
 

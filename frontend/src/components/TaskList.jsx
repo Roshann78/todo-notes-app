@@ -1,4 +1,5 @@
 import TaskItem from './TaskItem';
+import { AnimatePresence } from 'framer-motion';
 
 const TaskList = ({ tasks, onToggleTask, onDeleteTask }) => {
   if (!tasks || tasks.length === 0) {
@@ -14,17 +15,19 @@ const TaskList = ({ tasks, onToggleTask, onDeleteTask }) => {
     <section className="list-section">
       <h2 className="section-title">Your Tasks</h2>
       <div className="tasks-container" style={{ display: 'flex', flexDirection: 'column' }}>
-        {tasks.map(task => {
-          const id = task._id || task.id;
-          return (
-            <TaskItem 
-              key={id} 
-              task={task} 
-              onToggle={() => onToggleTask(id)} 
-              onDelete={() => onDeleteTask(id)} 
-            />
-          );
-        })}
+        <AnimatePresence>
+          {tasks.map(task => {
+            const id = task._id || task.id;
+            return (
+              <TaskItem 
+                key={id} 
+                task={task} 
+                onToggle={() => onToggleTask(id)} 
+                onDelete={() => onDeleteTask(id)} 
+              />
+            );
+          })}
+        </AnimatePresence>
       </div>
     </section>
   );

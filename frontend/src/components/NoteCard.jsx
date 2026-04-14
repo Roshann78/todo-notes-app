@@ -1,3 +1,5 @@
+import { motion } from 'framer-motion';
+
 const NoteCard = ({ note, onDelete }) => {
   const formattedDate = new Date(note.createdAt).toLocaleDateString(undefined, {
     year: 'numeric',
@@ -8,7 +10,13 @@ const NoteCard = ({ note, onDelete }) => {
   });
 
   return (
-    <article className="card">
+    <motion.article 
+      className="card"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, transition: { duration: 0.2 } }}
+      transition={{ duration: 0.3 }}
+    >
       <header className="card-header">
         <h3 className="card-title">{note.title}</h3>
         <button 
@@ -26,7 +34,7 @@ const NoteCard = ({ note, onDelete }) => {
       <footer className="card-footer">
         <time dateTime={note.createdAt}>{formattedDate}</time>
       </footer>
-    </article>
+    </motion.article>
   );
 };
 

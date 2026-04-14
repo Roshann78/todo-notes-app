@@ -1,6 +1,7 @@
 import TaskForm from '../components/TaskForm';
 import TaskList from '../components/TaskList';
 import useTasks from '../hooks/useTasks';
+import { motion } from 'framer-motion';
 
 const TasksPage = () => {
   const { tasks, loading, error, addTask, toggleTask, deleteTask } = useTasks();
@@ -26,7 +27,12 @@ const TasksPage = () => {
   }
 
   return (
-    <div className="page-container">
+    <motion.div 
+      className="page-container"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.25 }}
+    >
       <h1 className="page-title">Tasks</h1>
       <TaskForm onAddTask={addTask} />
       <TaskList 
@@ -34,7 +40,7 @@ const TasksPage = () => {
         onToggleTask={toggleTask}
         onDeleteTask={deleteTask} 
       />
-    </div>
+    </motion.div>
   );
 };
 

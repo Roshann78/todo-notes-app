@@ -1,3 +1,5 @@
+import { motion } from 'framer-motion';
+
 const TaskItem = ({ task, onToggle, onDelete }) => {
   const formattedCreatedDate = new Date(task.createdAt).toLocaleDateString(undefined, {
     month: 'short', day: 'numeric'
@@ -33,7 +35,14 @@ const TaskItem = ({ task, onToggle, onDelete }) => {
   const borderColor = getTaskStatus(task.dueDate, task.isCompleted);
 
   return (
-    <article className={`task-item ${task.isCompleted ? 'completed' : ''}`} style={{ borderLeft: `6px solid ${borderColor}` }}>
+    <motion.article 
+      className={`task-item ${task.isCompleted ? 'completed' : ''}`} 
+      style={{ borderLeft: `6px solid ${borderColor}` }}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, transition: { duration: 0.2 } }}
+      transition={{ duration: 0.3 }}
+    >
       <div className="task-content">
         <input 
           type="checkbox" 
@@ -62,7 +71,7 @@ const TaskItem = ({ task, onToggle, onDelete }) => {
           <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"></path>
         </svg>
       </button>
-    </article>
+    </motion.article>
   );
 };
 
