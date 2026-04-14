@@ -4,6 +4,12 @@ dotenv.config();
 const express = require('express');
 const cors = require('cors');
 const session = require('express-session');
+const cron = require('node-cron');
+const { checkUpcomingTasks } = require('./jobs/reminderJob');
+
+const express = require('express');
+const cors = require('cors');
+const session = require('express-session');
 const passport = require('./config/passport');
 const connectDB = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
@@ -49,5 +55,11 @@ const PORT = process.env.PORT || 5000;
 connectDB().then(() => {
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
+    
+    // Schedule the reminder job to run every 15 minutes
+    cron.schedule('*/15 * * * *', () => {
+      checkUpcomingTasks();
+    });
+    console.log('Reminder job started');
   });
 });
