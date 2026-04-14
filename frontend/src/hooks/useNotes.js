@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axiosInstance from '../utils/axiosInstance';
+import toast from 'react-hot-toast';
 
 const useNotes = () => {
   const [notes, setNotes] = useState([]);
@@ -13,7 +14,9 @@ const useNotes = () => {
       const response = await axiosInstance.get('/api/notes');
       setNotes(response.data);
     } catch (err) {
-      setError(err.response?.data?.message || err.message || 'Failed to fetch notes');
+      const msg = err.response?.data?.message || err.message || 'Failed to fetch notes';
+      setError(msg);
+      toast.error('Something went wrong. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -28,8 +31,11 @@ const useNotes = () => {
       setError(null);
       await axiosInstance.post('/api/notes', { title, body });
       await fetchNotes();
+      toast.success("Note created!");
     } catch (err) {
-      setError(err.response?.data?.message || err.message || 'Failed to add note');
+      const msg = err.response?.data?.message || err.message || 'Failed to add note';
+      setError(msg);
+      toast.error('Something went wrong. Please try again.');
     }
   };
 
@@ -38,8 +44,11 @@ const useNotes = () => {
       setError(null);
       await axiosInstance.delete(`/api/notes/${id}`);
       await fetchNotes();
+      toast.success("Note deleted");
     } catch (err) {
-      setError(err.response?.data?.message || err.message || 'Failed to delete note');
+      const msg = err.response?.data?.message || err.message || 'Failed to delete note';
+      setError(msg);
+      toast.error('Something went wrong. Please try again.');
     }
   };
 
@@ -48,8 +57,12 @@ const useNotes = () => {
       setError(null);
       await axiosInstance.put(`/api/notes/${id}`, { title, body });
       await fetchNotes();
+      // Added a toast for update since the pattern applies
+      toast.success("Note updated");
     } catch (err) {
-      setError(err.response?.data?.message || err.message || 'Failed to update note');
+      const msg = err.response?.data?.message || err.message || 'Failed to update note';
+      setError(msg);
+      toast.error('Something went wrong. Please try again.');
     }
   };
 

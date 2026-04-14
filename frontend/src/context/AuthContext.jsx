@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect } from 'react';
 import axiosInstance from '../utils/axiosInstance';
+import toast from 'react-hot-toast';
 
 export const AuthContext = createContext(null);
 
@@ -16,11 +17,11 @@ export const AuthProvider = ({ children }) => {
           const res = await axiosInstance.get('/auth/me');
           setUser(res.data);
         } catch (err) {
-          // Token is invalid or expired — clear it
           console.error('Failed to fetch user:', err);
           localStorage.removeItem('token');
           setToken(null);
           setUser(null);
+          toast.error("Session expired. Please sign in again.");
         }
       }
       setLoading(false);
@@ -46,12 +47,15 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Clear everything and redirect to /login
   const logout = () => {
     localStorage.removeItem('token');
     setToken(null);
     setUser(null);
-    window.location.href = '/login';
+    toast.success("Signed out successfully");
+    // Wait slightly to let toast render if desired, but window.location.href reloads immediately
+    setTimeout(() => {
+      window.location.href = '/login';
+    }, 500);
   };
 
   return (
