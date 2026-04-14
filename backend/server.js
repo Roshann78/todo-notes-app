@@ -9,6 +9,7 @@ const connectDB = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
 const noteRoutes = require('./routes/noteRoutes');
 const taskRoutes = require('./routes/taskRoutes');
+const { notFound, errorHandler } = require('./middleware/errorMiddleware');
 
 const app = express();
 
@@ -38,6 +39,10 @@ app.use('/api/tasks', taskRoutes);
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', message: 'Server is running' });
 });
+
+// Error Handling Middleware (must be at the very bottom)
+app.use(notFound);
+app.use(errorHandler);
 
 // Connect to DB and start server
 const PORT = process.env.PORT || 5000;
