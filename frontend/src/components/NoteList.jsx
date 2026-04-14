@@ -14,9 +14,10 @@ const NoteList = ({ notes, onDeleteNote }) => {
     <section className="list-section">
       <h2 className="section-title">Your Notes</h2>
       <div className="grid-container">
-        {notes.map(note => (
-          <NoteCard key={note.id} note={note} onDelete={() => onDeleteNote(note.id)} />
-        ))}
+        {notes.map(note => {
+          const id = note._id || note.id; // Support both DB _id and old localStorage id
+          return <NoteCard key={id} note={note} onDelete={() => onDeleteNote(id)} />
+        })}
       </div>
     </section>
   );

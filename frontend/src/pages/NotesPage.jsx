@@ -1,34 +1,35 @@
-import { useState, useEffect } from 'react';
 import NoteForm from '../components/NoteForm';
 import NoteList from '../components/NoteList';
-import { getNotes, saveNotes, generateId } from '../utils/localStorage';
+import useNotes from '../hooks/useNotes';
 
 const NotesPage = () => {
-  const [notes, setNotes] = useState(() => getNotes());
+  const { notes, loading, error, addNote, deleteNote } = useNotes();
 
-  useEffect(() => {
-    saveNotes(notes);
-  }, [notes]);
+  if (loading) {
+    return (
+      <div className="page-container">
+        <h1 className="page-title">Notes</h1>
+        <div style={{ textAlign: 'center', padding: '2rem', opacity: 0.7 }}>Loading notes...</div>
+      </div>
+    );
+  }
 
-  const handleAddNote = (title, body) => {
-    const newNote = {
-      id: generateId(),
-      title,
-      body,
-      createdAt: new Date().toISOString()
-    };
-    setNotes(prevNotes => [newNote, ...prevNotes]);
-  };
-
-  const handleDeleteNote = (id) => {
-    setNotes(prevNotes => prevNotes.filter(note => note.id !== id));
-  };
+  if (error) {
+    return (
+      <div className="page-container">
+        <h1 className="page-title">Notes</h1>
+        <div style={{ padding: '1rem', background: '#ff444420', color: '#ff4444', borderRadius: '8px', textAlign: 'center' }}>
+          {error}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="page-container">
       <h1 className="page-title">Notes</h1>
-      <NoteForm onAddNote={handleAddNote} />
-      <NoteList notes={notes} onDeleteNote={handleDeleteNote} />
+      <NoteForm onAddNote={addNote} />
+      <NoteList notes={notes} onDeleteNote={deleteNote} />
     </div>
   );
 };
