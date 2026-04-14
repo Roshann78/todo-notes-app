@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
+import useTheme from '../hooks/useTheme';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const toggleMenu = () => setIsOpen(!isOpen);
   const { user, logout, loading } = useAuth();
+  const { theme, toggleTheme } = useTheme();
 
   return (
     <>
@@ -21,6 +23,10 @@ const Navbar = () => {
           <NavLink to="/tasks" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`} onClick={() => setIsOpen(false)}>Tasks</NavLink>
         </div>
         <div className="nav-user">
+          <button onClick={toggleTheme} className="theme-toggle-btn" aria-label="Toggle theme">
+            {theme === 'dark' ? '☀️' : '🌙'}
+          </button>
+          
           {loading ? null : user ? (
             <div className="user-info">
               {user.profilePhoto && (
@@ -36,11 +42,17 @@ const Navbar = () => {
       </nav>
       <style>{`
         .hamburger-menu { display: none; cursor: pointer; flex-direction: column; gap: 5px; padding: 4px; }
-        .bar { display: block; width: 24px; height: 3px; background-color: var(--text-main); border-radius: 3px; transition: var(--transition); }
-        .nav-user { display: flex; align-items: center; }
+        .bar { display: block; width: 24px; height: 3px; background-color: var(--text-primary); border-radius: 3px; transition: var(--transition); }
+        .nav-user { display: flex; align-items: center; gap: 1rem; }
+        .theme-toggle-btn {
+          background: transparent; border: none; font-size: 1.2rem; cursor: pointer;
+          display: flex; align-items: center; justify-content: center;
+          padding: 0.5rem; border-radius: 50%; transition: var(--transition);
+        }
+        .theme-toggle-btn:hover { background: var(--bg-secondary); }
         .user-info { display: flex; align-items: center; gap: 0.75rem; }
         .user-avatar { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent-color); }
-        .user-name { color: var(--text-main); font-size: 0.9rem; font-weight: 500; }
+        .user-name { color: var(--text-primary); font-size: 0.9rem; font-weight: 500; }
         .logout-btn {
           background: rgba(255, 80, 80, 0.15); color: #ff6b6b; border: 1px solid rgba(255, 80, 80, 0.3);
           padding: 0.4rem 0.9rem; border-radius: 8px; cursor: pointer; font-size: 0.8rem; font-weight: 500;
